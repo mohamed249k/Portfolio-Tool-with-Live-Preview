@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Builder Tool</title>
+    <style>
+        :root {
+            --primary-color: #00CED1;
+            --primary-dark: #00a6a9;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #ddd;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 0.8rem;
+            color: var(--primary-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        header h1 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+        }
+
+        /* Form Styling */
+        .form-section {
+            flex: 1;
+            padding: 2rem;
+            background: var(--white);
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .secondary-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .secondary-btn:hover {
+            background: #e0e0e0;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            flex: 1;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .preview-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            opacity: 0.7;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .skill-pill {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .project-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .project-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Live region for accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .aria-live {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Portfolio Builder Tool</h1>
+            <p>Create your professional portfolio in minutes</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Form Section -->
+            <section class="form-section" aria-labelledby="form-heading">
+                <h2 id="form-heading">Your Information</h2>
+                
+                <form id="portfolio-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="e.g., Jane Smith" aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="e.g., Frontend Developer" aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="about">About Me</label>
+                        <textarea id="about" placeholder="Write a brief description about yourself..." aria-required="true"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skills">Skills (comma separated)</label>
+                        <input type="text" id="skills" placeholder="e.g., HTML, CSS, JavaScript" aria-required="true">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Projects</label>
+                        <div class="form-group">
+                            <label for="projectTitle1">Project 1 Title</label>
+                            <input type="text" id="projectTitle1" placeholder="Project name">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDesc1">Project 1 Description</label>
+                            <textarea id="projectDesc1" placeholder="Project description..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectLink1">Project 1 Link (optional)</label>
+                            <input type="url" id="projectLink1" placeholder="https://...">
+                        </div>
+                        
+                        <div id="additional-projects"></div>
+                        
+                        <button type="button" id="add-project" class="secondary-btn">+ Add Another Project</button>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-btn">Generate Portfolio</button>
+                        <button type="button" id="download-btn" disabled>Download Portfolio</button>
+                        <button type="button" id="reset-btn" class="secondary-btn">Reset Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Preview Section -->
+            <section class="preview-section" aria-labelledby="preview-heading">
+                <h2 id="preview-heading">Live Preview</h2>
+                <div id="preview-container" class="preview-container">
+                    <div class="portfolio-header">
+                        <div class="avatar">You</div>
+                        <h2 id="preview-name">Your Name</h2>
+                        <h3 id="preview-jobTitle">Job Title</h3>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>About Me</h3>
+                        <p id="preview-about">Your about me section will appear here.</p>
+                    </div>
+                    
+                    <div class="skills-section">
+                        <h3>Skills</h3>
+                        <div class="skills-list" id="preview-skills">
+                            <div class="skill-pill">Example</div>
+                        </div>
+                    </div>
+                    
+                    <div class="projects-section">
+                        <h3>Projects</h3>
+                        <div id="preview-projects">
+                            <div class="project-item">
+                                <h4>Project Title</h4>
+                                <p>Project description will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Portfolio Builder Tool &copy; 2023</p>
+        </footer>
+    </div>
+
+    <!-- ARIA live region for accessibility announcements -->
+    <div id="aria-live" class="aria-live" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const portfolioForm = document.getElementById('portfolio-form');
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const addProjectBtn = document.getElementById('add-project');
+            const additionalProjects = document.getElementById('additional-projects');
+            const ariaLive = document.getElementById('aria-live');
+            
+            // Preview elements
+            const previewName = document.getElementById('preview-name');
+            const previewJobTitle = document.getElementById('preview-jobTitle');
+            const previewAbout = document.getElementById('preview-about');
+            const previewSkills = document.getElementById('preview-skills');
+            const previewProjects = document.getElementById('preview-projects');
+            
+            // Form input elements
+            const nameInput = document.getElementById('name');
+            const jobTitleInput = document.getElementById('jobTitle');
+            const aboutInput = document.getElementById('about');
+            const skillsInput = document.getElementById('skills');
+            
+            // Project counter
+            let projectCount = 1;
+            
+            // Initialize from localStorage if available
+            loadFromLocalStorage();
+            updatePreview();
+            setupLiveUpdates();
+            
+            // Event Listeners
+            generateBtn.addEventListener('click', generatePortfolio);
+            downloadBtn.addEventListener('click', downloadPortfolio);
+            resetBtn.addEventListener('click', resetForm);
+            addProjectBtn.addEventListener('click', addProjectField);
+            
+            // Set up live updates for all form fields
+            function setupLiveUpdates() {
+                const allInputs = portfolioForm.querySelectorAll('input, textarea');
+                allInputs.forEach(input => {
+                    input.addEventListener('input', updatePreview);
+                });
+            }
+            
+            // Update preview based on form inputs
+            function updatePreview() {
+                // Update basic info
+                previewName.textContent = nameInput.value || 'Your Name';
+                previewJobTitle.textContent = jobTitleInput.value || 'Job Title';
+                previewAbout.textContent = aboutInput.value || 'Your about me section will appear here.';
+                
+                // Update skills
+                const skills = skillsInput.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+                previewSkills.innerHTML = '';
+                
+                if (skills.length === 0) {
+                    previewSkills.innerHTML = '<div class="skill-pill">Example</div>';
+                } else {
+                    skills.forEach(skill => {
+                        const skillPill = document.createElement('div');
+                        skillPill.className = 'skill-pill';
+                        skillPill.textContent = skill;
+                        previewSkills.appendChild(skillPill);
+                    });
+                }
+                
+                // Update projects
+                previewProjects.innerHTML = '';
+                
+                for (let i = 1; i <= projectCount; i++) {
+                    const title = document.getElementById(`projectTitle${i}`)?.value || '';
+                    const desc = document.getElementById(`projectDesc${i}`)?.value || '';
+                    
+                    if (title || desc) {
+                        const projectItem = document.createElement('div');
+                        projectItem.className = 'project-item';
+                        
+                        const projectTitle = document.createElement('h4');
+                        projectTitle.textContent = title || 'Project Title';
+                        
+                        const projectDesc = document.createElement('p');
+                        projectDesc.textContent = desc || 'Project description will appear here.';
+                        
+                        projectItem.appendChild(projectTitle);
+                        projectItem.appendChild(projectDesc);
+                        
+                        const link = document.getElementById(`projectLink${i}`)?.value;
+                        if (link) {
+                            const projectLink = document.createElement('a');
+                            projectLink.href = link;
+                            projectLink.className = 'project-link';
+                            projectLink.textContent = 'View Project';
+                            projectLink.target = '_blank';
+                            projectItem.appendChild(projectLink);
+                        }
+                        
+                        previewProjects.appendChild(projectItem);
+                    }
+                }
+                
+                if (previewProjects.children.length === 0) {
+                    previewProjects.innerHTML = '<div class="project-item"><h4>Project Title</h4><p>Project description will appear here.</p></div>';
+                }
+                
+                // Save to localStorage
+                saveToLocalStorage();
+            }
+            
+            // Add new project field
+            function addProjectField() {
+                projectCount++;
+                
+                const projectField = document.createElement('div');
+                projectField.className = 'project-field';
+                projectField.innerHTML = `
+                    <div class="form-group">
+                        <label for="projectTitle${projectCount}">Project ${projectCount} Title</label>
+                        <input type="text" id="projectTitle${projectCount}" placeholder="Project name">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDesc${projectCount}">Project ${projectCount} Description</label>
+                        <textarea id="projectDesc${projectCount}" placeholder="Project description..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectLink${projectCount}">Project ${projectCount} Link (optional)</label>
+                        <input type="url" id="projectLink${projectCount}" placeholder="https://...">
+                    </div>
+                `;
+                
+                additionalProjects.appendChild(projectField);
+                
+                // Add event listeners to new inputs
+                const newInputs = projectField.querySelectorAll('input, textarea');
+                newInputs.forEach(input => {
+                    input.addEventListener('input', updatePreview);
+                });
+                
+                // Announce for accessibility
+                announceToScreenReader(`Added project field ${projectCount}`);
+            }
+            
+            // Generate portfolio HTML
+            function generatePortfolio() {
+                // Enable download button
+                downloadBtn.disabled = false;
+                
+                // Announce for accessibility
+                announceToScreenReader('Portfolio generated successfully. You can now download your portfolio.');
+                
+                alert('Portfolio generated successfully! Click the "Download Portfolio" button to download your portfolio.html file.');
+            }
+            
+            // Download portfolio as HTML file
+            function downloadPortfolio() {
+                const portfolioHTML = generatePortfolioHTML();
+                
+                // Create download link
+                const blob = new Blob([portfolioHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'portfolio.html';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                // Announce for accessibility
+                announceToScreenReader('Portfolio downloaded successfully');
+            }
+            
+            // Generate the complete portfolio HTML
+            function generatePortfolioHTML() {
+                const skills = skillsInput.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+                
+                let projectsHTML = '';
+                for (let i = 1; i <= projectCount; i++) {
+                    const title = document.getElementById(`projectTitle${i}`)?.value || '';
+                    const desc = document.getElementById(`projectDesc${i}`)?.value || '';
+                    const link = document.getElementById(`projectLink${i}`)?.value || '';
+                    
+                    if (title || desc) {
+                        projectsHTML += `
+                        <div class="project-item">
+                            <h3>${title}</h3>
+                            <p>${desc}</p>
+                            ${link ? `<a href="${link}" class="project-link" target="_blank">View Project</a>` : ''}
+                        </div>
+                        `;
+                    }
+                }
+                
+                return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${nameInput.value || 'My Portfolio'}</title>
+    <style>
+        :root {
+            --primary-color: #00CED1;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .portfolio-container {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            opacity: 0.7;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .skill-pill {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+        }
+        
+        .project-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .project-item:last-child {
+            border-bottom: none;
+        }
+        
+        .project-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .project-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .portfolio-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <div class="portfolio-header">
+            <div class="avatar">${(nameInput.value || 'You').charAt(0).toUpperCase()}</div>
+            <h1>${nameInput.value || 'Your Name'}</h1>
+            <h2>${jobTitleInput.value || 'Job Title'}</h2>
+        </div>
+        
+        <section class="about-section">
+            <h2>About Me</h2>
+            <p>${aboutInput.value || 'Your about me section will appear here.'}</p>
+        </section>
+        
+        <section class="skills-section">
+            <h2>Skills</h2>
+            <div class="skills-list">
+                ${skills.length > 0 ? 
+                    skills.map(skill => `<div class="skill-pill">${skill}</div>`).join('') : 
+                    '<div class="skill-pill">Example</div>'
+                }
+            </div>
+        </section>
+        
+        <section class="projects-section">
+            <h2>Projects</h2>
+            ${projectsHTML || '<div class="project-item"><h3>Project Title</h3><p>Project description will appear here.</p></div>'}
+        </section>
+    </div>
+</body>
+</html>`;
+            }
+            
+            // Reset form
+            function resetForm() {
+                if (confirm('Are you sure you want to reset the form? All your data will be lost.')) {
+                    portfolioForm.reset();
+                    additionalProjects.innerHTML = '';
+                    projectCount = 1;
+                    updatePreview();
+                    downloadBtn.disabled = true;
+                    localStorage.removeItem('portfolioData');
+                    
+                    // Announce for accessibility
+                    announceToScreenReader('Form has been reset');
+                }
+            }
+            
+            // Save form data to localStorage
+            function saveToLocalStorage() {
+                const formData = {
+                    name: nameInput.value,
+                    jobTitle: jobTitleInput.value,
+                    about: aboutInput.value,
+                    skills: skillsInput.value
+                };
+                
+                // Save project data
+                formData.projects = [];
+                for (let i = 1; i <= projectCount; i++) {
+                    const title = document.getElementById(`projectTitle${i}`)?.value || '';
+                    const desc = document.getElementById(`projectDesc${i}`)?.value || '';
+                    const link = document.getElementById(`projectLink${i}`)?.value || '';
+                    
+                    if (title || desc || link) {
+                        formData.projects.push({ title, desc, link });
+                    }
+                }
+                
+                localStorage.setItem('portfolioData', JSON.stringify(formData));
+            }
+            
+            // Load form data from localStorage
+            function loadFromLocalStorage() {
+                const savedData = localStorage.getItem('portfolioData');
+                if (savedData) {
+                    const formData = JSON.parse(savedData);
+                    
+                    nameInput.value = formData.name || '';
+                    jobTitleInput.value = formData.jobTitle || '';
+                    aboutInput.value = formData.about || '';
+                    skillsInput.value = formData.skills || '';
+                    
+                    // Load projects
+                    if (formData.projects && formData.projects.length > 0) {
+                        // Clear default project field
+                        const projectTitle1 = document.getElementById('projectTitle1');
+                        const projectDesc1 = document.getElementById('projectDesc1');
+                        const projectLink1 = document.getElementById('projectLink1');
+                        
+                        if (formData.projects[0]) {
+                            projectTitle1.value = formData.projects[0].title || '';
+                            projectDesc1.value = formData.projects[0].desc || '';
+                            projectLink1.value = formData.projects[0].link || '';
+                        }
+                        
+                        // Add additional project fields if needed
+                        for (let i = 1; i < formData.projects.length; i++) {
+                            addProjectField();
+                            document.getElementById(`projectTitle${i+1}`).value = formData.projects[i].title || '';
+                            document.getElementById(`projectDesc${i+1}`).value = formData.projects[i].desc || '';
+                            document.getElementById(`projectLink${i+1}`).value = formData.projects[i].link || '';
+                        }
+                    }
+                }
+            }
+            
+            // Accessibility function to announce changes
+            function announceToScreenReader(message) {
+                ariaLive.textContent = message;
+            }
+        });
+    </script>
+</body>
+</html>
